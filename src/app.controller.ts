@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Req } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Market } from './interfaces/market.interface';
 import { MinuteCandle } from './interfaces/minuteCandle.interface';
-import { CandleDto } from './dto/candleDto';
+import { CandleDto } from './dto/candle.dto';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -14,21 +14,11 @@ export class AppController {
   }
 
   @Get('candles/minutes')
-  async getMinuteCandles(
-    @Body() candleDto: CandleDto,
-  ): Promise<MinuteCandle[]> {
-    const { market, minutes, count } = candleDto;
+  async getMinuteCandles(@Query() query: CandleDto): Promise<MinuteCandle[]> {
+    const { market, minutes, count } = query;
 
-    try {
-      const res = await this.appService.getMinuteCandles(
-        market,
-        minutes,
-        count,
-      );
+    const res = await this.appService.getMinuteCandles(market, minutes, count);
 
-      return res.data;
-    } catch (err) {
-      console.log(err);
-    }
+    return res.data;
   }
 }
