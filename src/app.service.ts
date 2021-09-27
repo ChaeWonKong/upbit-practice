@@ -29,10 +29,6 @@ export class AppService {
     minutes = 1,
     count = 1,
   ): Promise<AxiosResponse<MinuteCandle[]>> {
-    if (!market || !MARKETS[market]) {
-      throw new Error(`Invalid market provided: ${market}`);
-    }
-
     // convert 'KRW_BTC' format to 'KRW-BTC', to be acceptable in Upbit
     const targetMarket = MARKETS[market];
 
